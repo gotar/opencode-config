@@ -14,7 +14,7 @@ This repository contains the complete OpenCode configuration setup including:
 
 1. Clone this repository:
 ```bash
-git clone <your-repo-url> ~/.config/opencode
+git clone https://github.com/gotar/opencode-config ~/.config/opencode
 ```
 
 2. Install dependencies:
@@ -23,7 +23,7 @@ cd ~/.config/opencode
 npm install
 ```
 
-3. Create a `.env` file with your API keys:
+3. Copy the example environment file and add your API keys:
 ```bash
 cp .env.example .env
 # Edit .env with your actual API keys
