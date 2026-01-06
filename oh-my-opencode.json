@@ -1,0 +1,44 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "google_auth": true,
+  "agents": {
+    "Sisyphus": {
+      "model": "opencode/glm-4.7-free"
+    },
+    "OpenCode-Builder": {
+      "model": "opencode/glm-4.7-free"
+    },
+    "Planner-Sisyphus": {
+      "model": "opencode/glm-4.7-free"
+    },
+    "oracle": {
+      "model": "opencode/glm-4.7-free"
+    },
+    "librarian": {
+      "model": "opencode/glm-4.7-free"
+    },
+    "explore": {
+      "model": "opencode/grok-code"
+    },
+    "frontend-ui-ux-engineer": {
+      "model": "opencode/glm-4.7-free"
+    },
+    "document-writer": {
+      "model": "opencode/glm-4.7-free"
+    },
+    "multimodal-looker": {
+      "model": "opencode/grok-code"
+    }
+  },
+  "sisyphus_agent": {
+    "disabled": false,
+    "default_builder_enabled": false,
+    "planner_enabled": true,
+    "replace_plan": true
+  },
+  "disabled_hooks": [
+    "startup-toast"
+  ],
+  "disabled_mcps": [],
+  "disabled_skills": []
+}

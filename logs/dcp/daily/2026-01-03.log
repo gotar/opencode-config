@@ -1,0 +1,2 @@
+2026-01-03T15:44:32.284Z INFO  index: DCP initialized
+2026-01-03T15:44:32.298Z INFO  index: Added 'discard' and 'extract' to experimental.primary_tools via config mutation
