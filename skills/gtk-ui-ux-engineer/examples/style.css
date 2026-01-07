@@ -1,10 +1,10 @@
 /* Example Application CSS */
 /* Demonstrates modern GTK4 styling with Libadwaita */
 
-/* ========== Global Styles ========== */
+ /* ========== Global Styles ========== */
 window {
-  background-color: @window_bg_color;
-  color: @window_fg_color;
+  background-color: var(--window-bg-color);
+  color: var(--window-fg-color);
 }
 
 /* ========== Typography ========== */
@@ -54,12 +54,12 @@ window {
   --accent-color: oklab(from var(--accent-bg-color) var(--standalone-color-oklab));
 }
 
-/* ========== Cards ========== */
+ /* ========== Cards ========== */
 .card {
-  background-color: @card_bg_color;
+  background-color: var(--card-bg-color);
   border-radius: 12px;
   padding: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--card-shade-color);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   transition: box-shadow 200ms ease, transform 100ms ease;
 }
@@ -87,11 +87,11 @@ window {
   }
 }
 
-/* ========== Sidebar ========== */
+ /* ========== Sidebar ========== */
 .sidebar {
-  background-color: @sidebar_bg_color;
+  background-color: var(--sidebar-bg-color);
   padding: 12px;
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  border-right: 1px solid var(--sidebar-border-color);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -138,7 +138,7 @@ window {
   color: var(--accent-fg-color);
 }
 
-/* ========== Buttons ========== */
+ /* ========== Buttons ========== */
 /* Primary action button (suggested) */
 .suggested-action {
   background-color: var(--accent-bg-color);
@@ -146,16 +146,16 @@ window {
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 600;
-  transition: filter 200ms ease, transform 100ms ease;
+  transition: background-color 200ms ease, transform 100ms ease;
 }
 
 .suggested-action:hover {
-  filter: brightness(1.1);
+  background-color: color-mix(in srgb, var(--accent-bg-color) 90%, white);
   transform: translateY(-1px);
 }
 
 .suggested-action:active {
-  filter: brightness(0.9);
+  background-color: color-mix(in srgb, var(--accent-bg-color) 70%, white);
   transform: translateY(0);
 }
 
@@ -238,9 +238,9 @@ searchentry {
   margin-bottom: 8px;
 }
 
-/* ========== Status Bar ========== */
+ /* ========== Status Bar ========== */
 GtkActionBar {
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: 1px solid var(--card-shade-color);
   padding: 6px 12px;
 }
 

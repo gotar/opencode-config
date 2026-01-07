@@ -6,20 +6,33 @@ Comprehensive guide to CSS styling with Libadwaita for modern GTK4 applications.
 
 ### Understanding Libadwaita CSS Variables
 
-Libadwaita provides a rich set of CSS variables that automatically adapt to system themes (light/dark/high-contrast):
+Libadwaita provides a rich set of CSS variables that automatically adapt to system themes (light/dark/high-contrast).
+
+**GTK4 Syntax (Required):** Use CSS custom properties (--variable), NOT GTK3 @define-color:
 
 ```css
-/* Window colors */
+/* GTK4: Use var() for CSS variables */
+:root {
+  /* Access system variables directly */
+  --my-window-bg: var(--window-bg-color);
+  --my-card-bg: var(--card-bg-color);
+}
+
+/* Usage */
+.card {
+  background-color: var(--my-card-bg);
+}
+```
+
+**GTK3 Syntax (DO NOT USE):**
+```css
+/* GTK3: @define-color is deprecated */
 @define-color window_bg_color var(--window-bg-color);
-@define-color window_fg_color var(--window-fg-color);
 
-/* Widget colors */
-@define-color headerbar_bg_color var(--headerbar-bg-color);
-@define-color headerbar_fg_color var(--headerbar-fg-color);
-
-/* Accent colors */
-@define-color accent_bg_color var(--accent-bg-color);
-@define-color accent_fg_color var(--accent-fg-color);
+/* Usage - doesn't work in GTK4 */
+.card {
+  background-color: @window_bg_color;
+}
 ```
 
 ### Custom Accent Colors
@@ -87,16 +100,21 @@ Use media queries to adapt to different themes:
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 600;
+  transition: background-color 150ms ease;
 }
 
 .primary-button:hover {
-  filter: brightness(1.1);
+  /* GTK4: Use color-mix instead of filter */
+  background-color: color-mix(in srgb, var(--accent-bg-color) 90%, white);
 }
 
 .primary-button:active {
-  filter: brightness(0.9);
+  /* GTK4: Use color-mix instead of filter */
+  background-color: color-mix(in srgb, var(--accent-bg-color) 70%, white);
 }
 ```
+
+**Note:** GTK4 does NOT support CSS `filter` functions like `brightness()`. Use `color-mix()` to adjust colors.
 
 **Icon Buttons:**
 ```css
@@ -122,17 +140,17 @@ Use media queries to adapt to different themes:
 
 ```css
 .card {
-  background-color: @card_bg_color;
+  background-color: var(--card-bg-color);
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--card-shade-color);
 }
 
 @media (prefers-color-scheme: dark) {
   .card {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -147,8 +165,8 @@ Use media queries to adapt to different themes:
 entry {
   border-radius: 8px;
   padding: 8px 12px;
-  background-color: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: var(--window-bg-color);
+  border: 1px solid var(--border-color);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -160,7 +178,7 @@ entry {
 
 entry:focus {
   border-color: var(--accent-bg-color);
-  box-shadow: 0 0 0 2px alpha(var(--accent-bg-color), 0.3);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-bg-color) 30%, transparent);
 }
 ```
 
@@ -174,11 +192,11 @@ entry:focus {
 }
 
 .listitem:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: var(--card-shade-color);
 }
 
 .listitem:active {
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: color-mix(in srgb, var(--card-shade-color) 50%, var(--window-bg-color));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -248,17 +266,17 @@ window {
 
 ```css
 .text-primary {
-  color: @window_fg_color;
+  color: var(--window-fg-color);
   opacity: 1.0;
 }
 
 .text-secondary {
-  color: @window_fg_color;
+  color: var(--window-fg-color);
   opacity: 0.7;
 }
 
 .text-tertiary {
-  color: @window_fg_color;
+  color: var(--window-fg-color);
   opacity: 0.5;
 }
 ```
@@ -434,19 +452,39 @@ AdwStyleManager *manager = adw_style_manager_get_default();
 
 // Force dark mode
 adw_style_manager_set_color_scheme(manager,
-                                    ADW_COLOR_SCHEME_FORCE_DARK);
+                                     ADW_COLOR_SCHEME_FORCE_DARK);
 
 // Force light mode
 adw_style_manager_set_color_scheme(manager,
-                                    ADW_COLOR_SCHEME_FORCE_LIGHT);
+                                     ADW_COLOR_SCHEME_FORCE_LIGHT);
 
 // Follow system preference (default)
 adw_style_manager_set_color_scheme(manager,
-                                    ADW_COLOR_SCHEME_DEFAULT);
+                                     ADW_COLOR_SCHEME_DEFAULT);
 
 // Listen to changes
 g_signal_connect(manager, "notify::dark",
-                 G_CALLBACK(on_dark_changed), NULL);
+                  G_CALLBACK(on_dark_changed), NULL);
+```
+
+### Python/PyGObject Version
+
+```python
+from gi.repository import Adw, Gio, GLib
+
+manager = Adw.StyleManager.get_default()
+
+# Force dark mode
+manager.set_color_scheme(Adw.ColorScheme.FORCE_DARK)
+
+# Force light mode
+manager.set_color_scheme(Adw.ColorScheme.FORCE_LIGHT)
+
+# Follow system preference (default)
+manager.set_color_scheme(Adw.ColorScheme.DEFAULT)
+
+# Listen to changes
+manager.connect('notify::dark', on_dark_changed)
 ```
 
 ## Icon Styling

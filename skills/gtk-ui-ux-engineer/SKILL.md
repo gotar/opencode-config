@@ -41,6 +41,43 @@ A GTK (GTK4/GTK3) UI/UX specialist who crafts beautiful, native-feeling desktop 
 
 ---
 
+## GTK4 CSS Syntax Requirements
+
+**CRITICAL: GTK4 uses different CSS syntax than GTK3. Always use:**
+
+- ✅ `var(--variable)` for CSS variables (GTK4)
+- ❌ `@variable` for GTK3 variables (deprecated, doesn't work)
+- ✅ `color-mix()` for color blending (GTK4)
+- ❌ `filter: brightness()` (not supported in GTK4)
+- ✅ Media queries: `@media (prefers-color-scheme: dark)`
+- ✅ Libadwaita variables: `var(--window-bg-color)`
+
+**GTK3 Syntax That Does NOT Work in GTK4:**
+```css
+/* ❌ GTK3 syntax - breaks in GTK4 */
+@define-color my_color red;
+@define-color window_bg var(--window-bg);
+color: @my_color;
+```
+
+**GTK4 Correct Syntax:**
+```css
+/* ✅ GTK4 syntax - correct */
+:root {
+  --my-color: red;
+  --window-bg: var(--window-bg-color);
+}
+
+.card {
+  background-color: var(--my-color);
+  color: var(--window-bg);
+}
+```
+
+**For detailed CSS styling guidance, see `references/libadwaita-styling.md`**
+
+---
+
 ## GTK4 UI/UX Aesthetics
 
 ### Typography & Icons
@@ -114,7 +151,7 @@ gtk_button_set_icon_name(GTK_BUTTON(button), "document-save-symbolic");
 ```css
 /* Cards with subtle shadows */
 .card {
-  background-color: @card_bg_color;
+  background-color: var(--card-bg-color);
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
@@ -129,7 +166,8 @@ gtk_button_set_icon_name(GTK_BUTTON(button), "document-save-symbolic");
 }
 
 .primary-button:hover {
-  filter: brightness(1.1);
+  /* GTK4: Use color-mix() instead of filter: brightness() */
+  background-color: color-mix(in srgb, var(--accent-bg-color) 90%, white);
 }
 ```
 
@@ -666,9 +704,9 @@ static void my_window_init(MyWindow *self) {
 ```
 
 ```css
-/* Custom styling (style.css */
+/* Custom styling (style.css) */
 window {
-  background-color: @window_bg_color;
+  background-color: var(--window-bg-color);
 }
 
 .title {
@@ -682,13 +720,14 @@ window {
 }
 
 .primary-button:hover {
-  filter: brightness(1.1);
+  /* GTK4: Use color-mix() instead of filter: brightness() */
+  background-color: color-mix(in srgb, var(--accent-bg-color) 90%, white);
 }
 ```
 
 This example demonstrates:
 - AdwApplicationWindow for native GNOME integration
 - Header bar with view switcher
-- Custom CSS loading
+- Custom CSS loading with GTK4 syntax
 - Responsive design with AdwBreakpoint
-- Libadwaita theming
+- Libadwaita theming using CSS variables
