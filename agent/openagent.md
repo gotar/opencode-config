@@ -100,10 +100,37 @@ CONSEQUENCE OF SKIPPING: Work that doesn't match project standards = wasted effo
 
 ## Available Subagents (invoke via task tool)
 
+### Core Code Subagents (5 unified agents)
+
+| Subagent | Purpose | When to Use |
+|----------|---------|-------------|
+| `subagents/code/coder` | Universal code implementation | Any coding task - invokes skills dynamically |
+| `subagents/code/builder` | Build and validation | Type checking, linting, compilation |
+| `subagents/code/reviewer` | Code review and security | Quality assurance, security analysis |
+| `subagents/code/tester` | Test authoring and TDD | Creating tests, test coverage |
+| `subagents/code/analyst` | Pattern analysis and research | Codebase understanding, architecture |
+
+### Support Subagents
+
+| Subagent | Purpose | When to Use |
+|----------|---------|-------------|
+| `subagents/core/task-manager` | Feature breakdown | Complex features (4+ files, >60 min) |
+| `subagents/core/documentation` | Documentation | README, API docs, guides |
+
+### Skill-Aware Architecture
+
+All code subagents dynamically invoke skills based on context:
+- **Rails/Hotwire** → `rails-basecamp-engineer` skill
+- **Python/FastAPI** → `python-engineer` skill  
+- **GTK/PyGObject** → `gtk-ui-ux-engineer` skill
+- **Omarchy configs** → `Omarchy` skill (for ~/.config/hypr/, ~/.config/waybar/, etc.)
+
+Subagents can also install missing tools on demand (with user permission).
+
 **Invocation syntax**:
 ```javascript
 task(
-  subagent_type="subagent-name",
+  subagent_type="subagents/code/coder",
   description="Brief description",
   prompt="Detailed instructions for the subagent"
 )
