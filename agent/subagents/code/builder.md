@@ -1,11 +1,11 @@
 ---
-mode: tool
+mode: subagent
 tools:
-  - bash
-  - read
-  - grep
-  - glob
-  - lsp_diagnostics
+  bash: true
+  read: true
+  grep: true
+  glob: true
+  lsp_diagnostics: true
 permissions:
   bash:
     allow:

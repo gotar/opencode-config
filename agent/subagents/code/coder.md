@@ -1,24 +1,24 @@
 ---
-mode: tool
+mode: subagent
 tools:
-  - read
-  - write
-  - edit
-  - grep
-  - glob
-  - bash
-  - lsp_diagnostics
-  - lsp_goto_definition
-  - lsp_hover
-  - lsp_find_references
-  - lsp_document_symbols
-  - lsp_workspace_symbols
-  - lsp_prepare_rename
-  - lsp_rename
-  - lsp_code_actions
-  - lsp_code_action_resolve
-  - ast_grep_search
-  - ast_grep_replace
+  read: true
+  write: true
+  edit: true
+  grep: true
+  glob: true
+  bash: true
+  lsp_diagnostics: true
+  lsp_goto_definition: true
+  lsp_hover: true
+  lsp_find_references: true
+  lsp_document_symbols: true
+  lsp_workspace_symbols: true
+  lsp_prepare_rename: true
+  lsp_rename: true
+  lsp_code_actions: true
+  lsp_code_action_resolve: true
+  ast_grep_search: true
+  ast_grep_replace: true
 permissions:
   bash:
     allow:

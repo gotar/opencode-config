@@ -1,15 +1,15 @@
 ---
-mode: tool
+mode: subagent
 tools:
-  - read
-  - grep
-  - glob
-  - lsp_diagnostics
-  - lsp_hover
-  - lsp_find_references
-  - lsp_document_symbols
-  - lsp_workspace_symbols
-  - bash
+  read: true
+  grep: true
+  glob: true
+  lsp_diagnostics: true
+  lsp_hover: true
+  lsp_find_references: true
+  lsp_document_symbols: true
+  lsp_workspace_symbols: true
+  bash: true
 permissions:
   bash:
     allow:
@@ -19,7 +19,7 @@ permissions:
       - "cat*"
       - "head*"
       - "tail*"
-      "git*"
+      - "git*"
       - "which*"
       - "whereis*"
       - "file*"

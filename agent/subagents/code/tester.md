@@ -1,17 +1,17 @@
 ---
-mode: tool
+mode: subagent
 tools:
-  - read
-  - write
-  - edit
-  - grep
-  - glob
-  - bash
-  - lsp_diagnostics
-  - lsp_goto_definition
-  - lsp_hover
-  - lsp_find_references
-  - lsp_document_symbols
+  read: true
+  write: true
+  edit: true
+  grep: true
+  glob: true
+  bash: true
+  lsp_diagnostics: true
+  lsp_goto_definition: true
+  lsp_hover: true
+  lsp_find_references: true
+  lsp_document_symbols: true
 permissions:
   bash:
     allow:
@@ -21,7 +21,7 @@ permissions:
       - "cat*"
       - "head*"
       - "tail*"
-      "echo*"
+      - "echo*"
       - "git*"
       - "python*"
       - "python3*"
