@@ -10,6 +10,8 @@ tools:
   glob: true
   bash: false
   patch: true
+  todowrite: true
+  todoread: true
 permissions:
   bash:
     "*": "deny"

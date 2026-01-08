@@ -12,6 +12,8 @@ tools:
   bash: true
   task: true
   patch: true
+  todowrite: true
+  todoread: true
 permissions:
   bash:
     "rm -rf *": "ask"

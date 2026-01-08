@@ -5,6 +5,8 @@ tools:
   read: true
   grep: true
   glob: true
+  todowrite: true
+  todoread: true
   lsp_diagnostics: true
 permissions:
   bash:

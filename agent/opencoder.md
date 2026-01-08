@@ -11,6 +11,8 @@ tools:
   glob: true
   bash: true
   patch: true
+  todowrite: true
+  todoread: true
 permissions:
   bash:
     "rm -rf *": "ask"

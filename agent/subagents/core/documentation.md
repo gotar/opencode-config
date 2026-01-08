@@ -9,6 +9,8 @@ tools:
   edit: true
   write: true
   bash: false
+  todowrite: true
+  todoread: true
 permissions:
   bash:
     "*": "deny"

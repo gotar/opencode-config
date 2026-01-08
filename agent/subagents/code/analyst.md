@@ -4,6 +4,8 @@ tools:
   read: true
   grep: true
   glob: true
+  todowrite: true
+  todoread: true
   lsp_document_symbols: true
   lsp_workspace_symbols: true
   lsp_goto_definition: true

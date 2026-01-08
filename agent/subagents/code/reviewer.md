@@ -4,6 +4,8 @@ tools:
   read: true
   grep: true
   glob: true
+  todowrite: true
+  todoread: true
   lsp_diagnostics: true
   lsp_hover: true
   lsp_find_references: true

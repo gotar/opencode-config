@@ -7,6 +7,8 @@ tools:
   grep: true
   glob: true
   bash: true
+  todowrite: true
+  todoread: true
   lsp_diagnostics: true
   lsp_goto_definition: true
   lsp_hover: true
