@@ -95,6 +95,45 @@ if a worker fails (3 review attempts):
 2. report what failed
 3. all changes revert automatically
 
+## post-merge learning (self-improving agent)
+
+after merging worker results, capture coordination patterns for continuous improvement:
+
+### trace capture (when 5+ tasks completed)
+document:
+- number of workers spawned (1, 2, or 3)
+- merge conflicts encountered
+- total execution time
+- worker success/failure rates
+- any bottlenecks or inefficiencies
+
+store trace: `.tmp/learning/traces/orchestrator_{timestamp}.md`
+
+### pattern detection (automatic)
+watch for recurring patterns:
+- frequent merge conflicts → consider reducing worker count
+- consistently long merge times → optimize task granularity
+- high failure rates → improve task decomposition
+- sequential dependencies limiting parallelism → restructure dependencies
+
+### apply adaptations
+if pattern detected with high confidence (3+ instances):
+```bash
+python skills/self-learning/scripts/apply_adaptation.py \
+  --agent orchestrator \
+  --adaptation "<pattern-based adjustment>" \
+  --level session
+```
+
+example: "reduce to 2 workers when merge conflicts > 2"
+
+### swarm completion learning
+after `swarm_finalize`:
+1. analyze all traces from this session
+2. extract insights for future swarms
+3. update knowledge-base.md if patterns persist (>3 sessions)
+4. report: "✓ learning: {N} insights captured, {M} patterns validated"
+
 ## important rules
 
 - NEVER execute tasks sequentially when they can be parallel

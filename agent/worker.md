@@ -61,6 +61,37 @@ look for messages from "reviewer":
 
 you have up to 3 review attempts. if all fail, the task fails.
 
+### step 4.5: pre-completion trace capture (self-improving agent)
+
+before calling `swarm_worker_complete`, capture execution trace:
+
+```markdown
+# Trace: worker_{timestamp}
+Agent: worker
+Task: {task_id} - {task_title}
+Status: Success/Failure
+
+## Approach
+1. {how you analyzed the task}
+2. {implementation strategy}
+3. {integration considerations}
+
+## Tools Invoked
+- Read: {files loaded for context}
+- Write/Edit: {files modified}
+- lsp_diagnostics: {validation performed}
+
+## Results
+- {what was accomplished}
+- {success criteria met}
+
+## Failures/Issues
+- {any errors encountered and how resolved}
+- {reviewer feedback and corrections}
+```
+
+save trace: `.tmp/learning/traces/worker_{timestamp}_{task_id}.md`
+
 ### step 5: complete the task
 
 **only after reviewer approval**, call:
@@ -86,6 +117,36 @@ swarm_worker_complete session_id={session_id} task_id={task_id} summary="what yo
 # worker_id: worker-task-1
 # worktree: /Users/x/.swarm/worktrees/project-task-1
 # files: src/lib/auth.ts
+
+# 0. pre-completion trace capture (self-improving agent)
+# before calling swarm_worker_complete, document your execution:
+
+```markdown
+# Trace: worker_{timestamp}
+Agent: worker
+Task: {task_id} - {task_title}
+Status: Success/Failure
+
+## Approach
+1. {how you analyzed task}
+2. {implementation strategy}
+3. {integration considerations}
+
+## Tools Invoked
+- Read: {files loaded for context}
+- Write/Edit: {files modified}
+- lsp_diagnostics: {validation performed}
+
+## Results
+- {what was accomplished}
+- {success criteria met}
+
+## Failures/Issues
+- {any errors encountered and how resolved}
+- {reviewer feedback and corrections}
+```
+
+# save trace: .tmp/learning/traces/worker_{timestamp}_{task_id}.md
 
 # 1. implement
 [write code to src/lib/auth.ts in worktree]

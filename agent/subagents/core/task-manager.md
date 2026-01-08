@@ -328,3 +328,52 @@ CONSEQUENCE OF SKIPPING: Task plans that don't align with project architecture =
   <progress_tracking>Maintain accurate status in both index and individual files</progress_tracking>
   <implementation_ready>Tasks should be immediately actionable with clear steps</implementation_ready>
 </principles>
+
+<self_improving>
+  <post_completion_learning>Capture task decomposition insights after feature completion</post_completion_learning>
+  <process>
+    After all tasks in a feature are complete (Stage 3):
+    1. Analyze task breakdown effectiveness:
+       - Were tasks atomic and independently completable?
+       - Did dependencies flow correctly?
+       - Were exit criteria measurable and achieved?
+    
+    2. Capture trace:
+       ```markdown
+       # Trace: task-manager_{timestamp}
+       Agent: task-manager
+       Feature: {feature_name}
+       Status: Success/Failure
+
+       ## Approach
+       1. {How context was applied}
+       2. {Decomposition strategy}
+       3. {Dependency mapping approach}
+
+       ## Results
+       - {Total tasks created}
+       - {Tasks completed successfully}
+       - {Feature completion time}
+
+       ## Insights
+       - {What worked well in task breakdown}
+       - {What could be improved}
+       - {Patterns to apply to future features}
+       ```
+
+    3. Extract insights:
+       - Success patterns: Approaches that led to smooth execution
+       - Failure patterns: Issues that caused blocking or rework
+       - Efficiency patterns: Ways to speed up task planning
+
+    4. Store trace: `.tmp/learning/traces/task-manager_{timestamp}_{feature}.md`
+
+    5. Report learning:
+       "✓ task-manager: {N} tasks created, {M} completed, {insight summary}"
+  </process>
+  <adaptation_triggers>
+    <recurring_issues>Same task type causes problems 3+ times</recurring_issues>
+    <consistently_inefficient>Task planning takes >2x expected time</consistently_inefficient>
+    <high_block_rate>Frequent dependency blocking (>20% of tasks)</high_block_rate>
+  </adaptation_triggers>
+</self_improving>

@@ -14,6 +14,14 @@
       ],
       "enabled": true
     },
+    "playwright": {
+      "type": "local",
+      "command": [
+        "npx",
+        "@playwright/mcp@latest"
+      ],
+      "enabled": false
+    },
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
@@ -30,7 +38,7 @@
   },
   "plugin": [
     "oh-my-opencode",
-    "opencode-antigravity-auth@1.2.7",
+    "opencode-antigravity-auth@1.2.8",
     "@tarquinen/opencode-dcp@latest"
   ],
   "provider": {
