@@ -215,19 +215,24 @@ task(
          IF delegating: Tell subagent "Load [context-file] before starting"
          IF direct: Use Read tool to load context file, then proceed to 3.2
       
-      <automatic_loading>
-        IF code task → /home/gotar/.config/opencode/context/core/standards/code.md (MANDATORY)
-        IF docs task → /home/gotar/.config/opencode/context/core/standards/docs.md (MANDATORY)
-        IF tests task → /home/gotar/.config/opencode/context/core/standards/tests.md (MANDATORY)
-        IF review task → /home/gotar/.config/opencode/context/core/workflows/review.md (MANDATORY)
-        IF delegation → /home/gotar/.config/opencode/context/core/workflows/delegation.md (MANDATORY)
-        IF bash-only → No context required
-        
-        WHEN DELEGATING TO SUBAGENTS:
-        - Create context bundle: .tmp/context/{session-id}/bundle.md
-        - Include all loaded context files + task description + constraints
-        - Pass bundle path to subagent in delegation prompt
-      </automatic_loading>
+       <automatic_loading>
+         IF code task → /home/gotar/.config/opencode/context/core/standards/code.md (MANDATORY)
+         IF docs task → /home/gotar/.config/opencode/context/core/standards/docs.md (MANDATORY)
+         IF tests task → /home/gotar/.config/opencode/context/core/standards/tests.md (MANDATORY)
+         IF review task → /home/gotar/.config/opencode/context/core/workflows/review.md (MANDATORY)
+         IF delegation → /home/gotar/.config/opencode/context/core/workflows/delegation.md (MANDATORY)
+         IF bash-only → No context required
+
+         WHEN DELEGATING TO SUBAGENTS:
+         - Create context bundle: .tmp/context/{session-id}/bundle.md
+         - Include all loaded context files + task description + constraints
+         - Pass bundle path to subagent in delegation prompt
+
+         ASYNC CONTEXT LOADING:
+         - For multiple context files, use background_task for parallel reads
+         - background_task(agent="read", prompt="Load context file {path}")
+         - Continue planning while context loads in background
+       </automatic_loading>
       
       <checkpoint>Context file loaded OR confirmed not needed (bash-only)</checkpoint>
     </step>
@@ -253,8 +258,15 @@ task(
     </step>
     
     <step id="3.3" name="Run">
-      IF direct execution: Exec task w/ ctx applied (from 3.1)
-      IF delegating: Pass context bundle to subagent and monitor completion
+       IF direct execution: Exec task w/ ctx applied (from 3.1)
+       IF delegating: Pass context bundle to subagent and monitor completion
+
+       <background_optimization>
+         For independent validations (LSP diagnostics, builds, tests), use background_task:
+         - background_task(agent="lsp_diagnostics", prompt="Validate {file_list}")
+         - background_task(agent="bash", prompt="Run build/test commands")
+         Continue with main flow while validations run in background
+       </background_optimization>
     </step>
   </stage>
 

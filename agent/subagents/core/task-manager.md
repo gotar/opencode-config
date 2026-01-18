@@ -129,9 +129,17 @@ CONSEQUENCE OF SKIPPING: Task plans that don't align with project architecture =
       <checkpoint>Plan presented and awaiting approval</checkpoint>
     </stage>
 
-    <stage id="2" name="FileCreation">
-      <action>Create task directory structure and files</action>
-      <prerequisites>Plan approved (Stage 1 complete)</prerequisites>
+     <stage id="2" name="FileCreation">
+       <action>Create task directory structure and files</action>
+       <prerequisites>Plan approved (Stage 1 complete)</prerequisites>
+
+       <background_optimization>
+         After creating task files, identify independent subtasks (no dependencies).
+         Use background_task to spawn workers for parallel execution:
+         - background_task(agent="task", prompt="Execute subtask {seq}")
+         - Launch multiple in parallel for independent tasks
+         - Monitor with background_output
+       </background_optimization>
       <process>
         1. Create directory structure:
            - Base: tasks/subtasks/{feature}/

@@ -125,13 +125,17 @@ When a needed tool is missing:
    Installation command: [command]
    Proceed with installation?
    ```
-3. If approved, install using the appropriate package manager:
+3. If approved, use background installation for non-blocking setup:
+   - Launch background_task for installation: background_task(agent="bash", prompt="Install [tool] with [command]")
+   - Continue with task while installation runs
+   - Check completion with background_output before using tool
+4. Install using the appropriate package manager:
    - Python: `uv tool install <package>` or `pip install <package>`
    - Node: `npm install -g <package>` or `npx <package>`
    - Rust: `cargo install <package>`
    - Go: `go install <path>`
    - Ruby: `gem install <gem>` or `bundle add <gem>`
-4. Document the installed tool in the project's README.md or .tool-versions
+5. Document the installed tool in the project's README.md or .tool-versions
 
 ## Code Quality Standards
 

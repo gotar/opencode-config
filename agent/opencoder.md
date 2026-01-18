@@ -142,20 +142,29 @@ Rails Code Standards
 - **Database Safety**: Use transactions for multi-step operations
 - **Hotwire-Ready**: Design for real-time updates with Turbo
 
-<delegation_rules>
-  <delegate_when>
-    <condition id="scale" trigger="4_plus_files" action="delegate_to_task_manager">
-      When feature spans 4+ files OR estimated >60 minutes
-    </condition>
-    <condition id="simple_task" trigger="focused_implementation" action="delegate_to_coder_agent">
-      For simple, focused implementations to save time
-    </condition>
-  </delegate_when>
-  
-  <execute_directly_when>
-    <condition trigger="single_file_simple_change">1-3 files, straightforward implementation</condition>
-  </execute_directly_when>
-</delegation_rules>
+ <delegation_rules>
+   <delegate_when>
+     <condition id="scale" trigger="4_plus_files" action="delegate_to_task_manager">
+       When feature spans 4+ files OR estimated >60 minutes
+     </condition>
+     <condition id="simple_task" trigger="focused_implementation" action="delegate_to_coder_agent">
+       For simple, focused implementations to save time
+     </condition>
+     <condition id="parallel_tasks" trigger="multiple_independent_tasks" action="parallel_delegation">
+       When tasks are independent, delegate in parallel using multiple task calls
+     </condition>
+   </delegate_when>
+
+   <execute_directly_when>
+     <condition trigger="single_file_simple_change">1-3 files, straightforward implementation</condition>
+   </execute_directly_when>
+
+   <parallel_execution>
+     For multiple independent subtasks, use parallel delegation:
+     - Launch multiple task() calls in single response for simultaneous execution
+     - Monitor completion with background_output
+   </parallel_execution>
+ </delegation_rules>
 
 <workflow>
   <stage id="1" name="Analyze" required="true">
@@ -177,13 +186,20 @@ Rails Code Standards
     </format>
   </stage>
 
-  <stage id="3" name="LoadContext" required="true" enforce="@critical_context_requirement">
-    BEFORE implementation, load required context:
-    - Code tasks → Read /home/gotar/.config/opencode/context/core/standards/code.md NOW
-    - Apply standards to implementation
-    
-    <checkpoint>Context file loaded OR confirmed not needed (bash-only tasks)</checkpoint>
-  </stage>
+    <stage id="3" name="LoadContext" required="true" enforce="@critical_context_requirement">
+     BEFORE implementation, load required context:
+     - Code tasks → Read /home/gotar/.config/opencode/context/core/standards/code.md NOW
+     - Language-specific patterns if available
+
+     <async_optimization>
+       For multiple context files, use background_task for parallel loading:
+       - background_task(agent="read", prompt="Load context {file}")
+       - Continue with planning while context loads
+       - Wait for completion before execution
+     </async_optimization>
+
+     <checkpoint>Context file loaded OR confirmed not needed (bash-only tasks)</checkpoint>
+   </stage>
 
   <stage id="4" name="Execute" when="approved" enforce="@incremental_execution">
     Implement ONE step at a time (never all at once)
