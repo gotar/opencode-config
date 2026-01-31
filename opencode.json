@@ -7,13 +7,15 @@
         "-y",
         "chrome-devtools-mcp@latest"
       ],
-      "enabled": true
+      "enabled": false
     },
     "playwright": {
       "type": "local",
       "command": [
         "npx",
-        "@playwright/mcp@latest"
+        "@playwright/mcp@latest",
+        "--executable-path",
+        "/usr/bin/google-chrome-stable"
       ],
       "enabled": false
     },
@@ -24,7 +26,7 @@
         "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
       },
       "enabled": true
-    },
+    }
   },
   "plugin": [
     "oh-my-opencode@latest",
@@ -33,6 +35,7 @@
   ],
   "provider": {
     "google": {
+      "name": "Google",
       "models": {
         "antigravity-gemini-3-pro": {
           "name": "Gemini 3 Pro (Antigravity)",
@@ -164,69 +167,25 @@
               }
             }
           }
-        },
-        "gemini-2.5-flash": {
-          "name": "Gemini 2.5 Flash (Gemini CLI)",
+        }
+      }
+    },
+    "llama-cpp": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "llama-server (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:8080/v1"
+      },
+      "models": {
+        "glm-4.7-flash": {
+          "name": "GLM-4.7-Flash (Local - AMD GPU)",
           "limit": {
-            "context": 1048576,
-            "output": 65536
+            "context": 32768,
+            "output": 16384
           },
           "modalities": {
             "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
               "text"
-            ]
-          }
-        },
-        "gemini-2.5-pro": {
-          "name": "Gemini 2.5 Pro (Gemini CLI)",
-          "limit": {
-            "context": 1048576,
-            "output": 65536
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
-        "gemini-3-flash-preview": {
-          "name": "Gemini 3 Flash Preview (Gemini CLI)",
-          "limit": {
-            "context": 1048576,
-            "output": 65536
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
-        "gemini-3-pro-preview": {
-          "name": "Gemini 3 Pro Preview (Gemini CLI)",
-          "limit": {
-            "context": 1048576,
-            "output": 65535
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
             ],
             "output": [
               "text"

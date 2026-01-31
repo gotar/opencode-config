@@ -1,44 +1,62 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
-  "google_auth": true,
   "agents": {
-    "Sisyphus": {
-      "model": "opencode/minimax-m2.1-free"
-    },
-    "OpenCode-Builder": {
-      "model": "opencode/minimax-m2.1-free"
-    },
-    "Planner-Sisyphus": {
-      "model": "opencode/minimax-m2.1-free"
-    },
     "oracle": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "opencode/kimi-k2.5-free"
     },
     "librarian": {
-      "model": "google/antigravity-gemini-3-flash"
-    },
-    "explore": {
-      "model": "opencode/grok-code"
-    },
-    "frontend-ui-ux-engineer": {
-      "model": "opencode/claude-opus-4-5"
-    },
-    "document-writer": {
       "model": "opencode/minimax-m2.1-free"
     },
+    "explore": {
+      "model": "opencode/minimax-m2.1-free"
+    },
+    "sisyphus": {
+      "model": "opencode/kimi-k2.5-free"
+    },
     "multimodal-looker": {
-      "model": "google/antigravity-gemini-3-flash"
+      "model": "opencode/kimi-k2.5-free"
+    },
+    "prometheus": {
+      "model": "opencode/minimax-m2.1-free"
+    },
+    "metis": {
+      "model": "opencode/kimi-k2.5-free"
+    },
+    "momus": {
+      "model": "opencode/kimi-k2.5-free"
+    },
+    "atlas": {
+      "model": "opencode/kimi-k2.5-free"
     }
   },
-  "sisyphus_agent": {
-    "disabled": false,
-    "default_builder_enabled": false,
-    "planner_enabled": true,
-    "replace_plan": true
+  "categories": {
+    "quick": {
+      "model": "opencode/minimax-m2.1-free"
+    },
+    "visual-engineering": {
+      "model": "opencode/kimi-k2.5-free"
+    },
+    "ultrabrain": {
+      "model": "opencode/kimi-k2.5-free"
+    },
+    "artistry": {
+      "model": "opencode/kimi-k2.5-free"
+    },
+    "unspecified-low": {
+      "model": "opencode/minimax-m2.1-free"
+    },
+    "unspecified-high": {
+      "model": "opencode/kimi-k2.5-free"
+    },
+    "writing": {
+      "model": "opencode/minimax-m2.1-free"
+    }
   },
-  "disabled_hooks": [
-    "startup-toast"
-  ],
-  "disabled_mcps": [],
-  "disabled_skills": []
+  "browser_automation_engine": {
+    "provider": "agent-browser"
+  },
+  "git_master": {
+    "commit_footer": false,
+    "include_co_authored_by": false
+  }
 }
