@@ -1174,6 +1174,297 @@ uv run ruff format .
 
 ---
 
+## Decision Trees
+
+### "Which Python Framework Should I Use?"
+
+```
+What are you building?
+├─ REST API / Microservices
+│  └─ Performance critical?
+│     ├─ Yes (10k+ req/s)
+│     │  └─ FastAPI + async
+│     │     • Auto-generated OpenAPI docs
+│     │     • Pydantic validation
+│     │     • Async I/O for high throughput
+│     │
+│     └─ No (standard load)
+│        └─ FastAPI (still) or Flask
+│           • FastAPI: modern, type-safe, auto-docs
+│           • Flask: simpler, more flexible
+│
+├─ Full-stack Web Application
+│  └─ Need admin interface?
+│     ├─ Yes
+│     │  └─ Django
+│     │     • Built-in admin
+│     │     • ORM with migrations
+│     │     • Authentication/permissions
+│     │
+│     └─ No
+│        └─ FastAPI + Jinja2
+│           • API-first with server-side rendering
+│           • Hotwire/Turbo compatibility
+│
+├─ Simple Script / CLI
+│  └─ Typer (recommended)
+│     • Type hints for CLI args
+│     • Auto-generated help
+│     • Shell completion
+│
+└─ Data Science / ML
+   └─ FastAPI for serving models
+      • Async prediction endpoints
+      • Pydantic for request validation
+      • Easy integration with ML libraries
+```
+
+### "Sync vs Async - Which Should I Use?"
+
+```
+What does your code do?
+├─ I/O Operations (network, disk, database)
+│  └─ Use async/await
+│     • HTTP requests (httpx.AsyncClient)
+│     • Database queries (asyncpg, async SQLAlchemy)
+│     • File I/O (aiofiles for heavy operations)
+│     • Multiple concurrent operations
+│     • WebSocket connections
+│
+├─ CPU-Intensive Work (calculations, data processing)
+│  └─ Use sync with multiprocessing
+│     • Machine learning inference
+│     • Image/video processing
+│     • Heavy data transformations
+│     • Use ProcessPoolExecutor, not threads
+│
+└─ Mixed Workload
+   └─ Async for I/O + ProcessPool for CPU
+      • FastAPI route (async)
+      • Offload CPU work to process pool
+      • Example: async endpoint → process image
+```
+
+### "How Should I Structure My Project?"
+
+```
+Project type?
+├─ Single script/tool
+│  └─ Single file with main()
+│     • Use typer for CLI
+│     • Add if __name__ == "__main__"
+│     • Example: mytool.py
+│
+├─ Library / Package (published to PyPI)
+│  └─ src/ layout
+│     • src/mypackage/ (code)
+│     • tests/ (pytest)
+│     • docs/ (mkdocs)
+│     • pyproject.toml (PEP 621)
+│     • Why: prevents import confusion
+│
+├─ Application / Service
+│  └─ Flat or src/ layout
+│     • app/ or src/app/ (application code)
+│     • tests/ (pytest + coverage)
+│     • config/ (settings per environment)
+│     • Dockerfile + docker-compose.yml
+│
+└─ Monorepo (multiple packages)
+   └─ Separate packages with shared config
+      • package_a/, package_b/
+      • Each: pyproject.toml, src/, tests/
+      • Root: shared CI config, Makefile
+```
+
+### "Which Database Should I Use?"
+
+```
+Data requirements?
+├─ Relational data (relations, transactions)
+│  └─ PostgreSQL (recommended)
+│     • Async support: asyncpg
+│     • ORM: SQLAlchemy 2.0 (async)
+│     • Migrations: Alembic
+│
+├─ Document / JSON data
+│  └─ MongoDB
+│     • Motor for async driver
+│     • Pydantic for schema validation
+│     • Good for unstructured data
+│
+├─ Key-Value / Cache
+│  └─ Redis
+│     • redis-py (async support)
+│     • Caching, sessions, rate limiting
+│
+├─ Simple / Embedded
+│  └─ SQLite
+│     • Good for testing, small apps
+│     • aiosqlite for async
+│     • Limited concurrency (not for high traffic)
+│
+└─ Time-series data
+   └─ TimescaleDB (PostgreSQL extension)
+      • Time-series optimizations
+      • SQL interface
+```
+
+### "Which Testing Approach?"
+
+```
+What to test?
+├─ Unit tests (functions, classes)
+│  └─ pytest with fixtures
+│     • Mock external dependencies
+│     • Test edge cases, errors
+│     • Parametrize for multiple cases
+│
+├─ Integration tests (database, APIs)
+│  └─ pytest + testcontainers
+│     • Spin up real services in containers
+│     • Test with actual database
+│     • Slower but more realistic
+│
+├─ API endpoints
+│  └─ FastAPI TestClient
+│     • In-memory testing
+│     • Fast, no server needed
+│     • Test request/response schemas
+│
+└─ E2E / Browser testing
+   └─ Playwright or Selenium
+      • Real browser automation
+      • Prefer agent-browser skill for this
+      • Test complete user flows
+```
+
+### "Deployment Strategy Decision"
+
+```
+Where to deploy?
+├─ Cloud Platform
+│  ├─ AWS
+│  │  └─ ECS Fargate (containers)
+│  │     • FastAPI in Docker
+│  │     • RDS for PostgreSQL
+│  │     • ALB for load balancing
+│  │
+│  ├─ Google Cloud
+│  │  └─ Cloud Run (serverless containers)
+│  │     • Auto-scaling
+│  │     • Pay per request
+│  │     • Perfect for FastAPI
+│  │
+│  └─ Azure
+│     └─ Container Apps
+│        • Similar to Cloud Run
+│        • Good integration with Azure services
+│
+├─ VPS / Bare Metal
+│  └─ Docker + Kamal (for Rails projects)
+│     • Or Docker Compose for simpler setups
+│     • Traefik or Nginx for reverse proxy
+│     • Let's Encrypt for SSL
+│
+└─ Serverless
+   └─ AWS Lambda + API Gateway
+      • Zappa or Mangum for FastAPI
+      • Good for sporadic traffic
+      • Cold start latency consideration
+```
+
+---
+
+## Self-Learning & Improvement
+
+### Trace Capture Template
+
+After completing a Python development task, document:
+
+```markdown
+# Trace: python-engineer_[timestamp]
+Skill: python-engineer
+Task: [brief description]
+Status: [success/partial/failure]
+
+## Architecture Decisions
+- Framework chosen: [FastAPI/Django/Flask/Typer]
+- Database: [PostgreSQL/SQLite/MongoDB]
+- Async/Sync: [choice and rationale]
+- Testing approach: [unit/integration/e2e]
+
+## Tools Used
+- [tool 1]
+- [tool 2]
+
+## Challenges Encountered
+- [Issue 1]
+- [Issue 2]
+
+## Solutions Applied
+- [Solution 1]
+- [Solution 2]
+
+## Performance Metrics
+- Response time: [X ms]
+- Test coverage: [X%]
+- LOC: [X lines]
+- Dependencies: [X packages]
+
+## Key Learnings
+- [What worked well]
+- [What to do differently]
+- [New pattern discovered]
+```
+
+Save to: `.tmp/learning/traces/python-engineer_[timestamp].md`
+
+### Pattern Recognition
+
+After 5+ traces, analyze for:
+- **Framework patterns**: Which framework worked best for which use case?
+- **Performance patterns**: Common bottlenecks and optimizations
+- **Testing patterns**: What caught the most bugs?
+- **Tooling patterns**: Which tools saved the most time?
+
+Extract insights to: `.tmp/learning/insights/python-engineer.md`
+
+### Common Patterns to Track
+
+**Success Patterns:**
+- FastAPI + asyncpg + Pydantic for high-performance APIs
+- SQLAlchemy 2.0 with explicit async session management
+- Pydantic Settings for configuration (type-safe, validated)
+- pytest with fixtures and parametrize for comprehensive testing
+- ruff for linting (speed, comprehensive rules)
+- uv for dependency management (speed, lock files)
+
+**Failure Patterns:**
+- Using requests in async functions (blocks event loop)
+- Mutable default arguments in functions
+- Not handling database session cleanup in async context
+- Mixing sync and async code without care
+- Skipping type hints on public APIs
+- Using print() instead of structured logging
+
+**Efficiency Opportunities:**
+- Code generation from Pydantic models (datamodel-code-generator)
+- Automated API testing with schemathesis
+- Property-based testing with hypothesis
+- Caching with functools.lru_cache or cachetools
+
+### Skill Evolution
+
+If patterns emerge:
+1. Update this SKILL.md with new learnings
+2. Add new decision trees based on experience
+3. Expand examples with real-world scenarios
+4. Document common pitfalls with solutions
+5. Add new framework/tool patterns as ecosystem evolves
+
+---
+
 ## Integration with Other Skills
 
 This skill provides comprehensive Python development guidance and can be integrated with other skills in the OpenCode ecosystem:
